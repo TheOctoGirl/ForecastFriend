@@ -43,12 +43,47 @@ class get_weather:
         alerts = ECWeather(coordinates=(latitude,longitude))
         await alerts.update()
         warnings = alerts.alerts
+        warning_text = []
+        warning_time = []
         try:
             alert_title = warnings['warnings']['value'][0]['title']
             alert_time = warnings['warnings']['value'][0]['date']
-            return alert_title, alert_time
+            warning_text.append(alert_title)
+            warning_time.append(alert_time)
         except IndexError:
-            raise WarningNotFoundError
+            warning_text.append("No warnings")
+            warning_time.append("No warnings")
+        finally:
+            try:
+                watch_title = warnings['watches']['value'][0]['title']
+                watch_time = warnings['watches']['value'][0]['date']
+                warning_text.append(watch_title)
+                warning_time.append(watch_time)
+            except IndexError:
+                warning_text.append("No watches")
+                warning_time.append("No watches")
+            finally:
+                try:
+                    advisory_title = warnings['advisories']['value'][0]['title']
+                    advisory_time = warnings['advisories']['value'][0]['date']
+                    warning_text.append(advisory_title)
+                    warning_time.append(advisory_time)
+                except IndexError:
+                    warning_text.append("No advisories")
+                    warning_time.append("No advisories")
+                finally:
+                    try:
+                        statement_title = warnings['statements']['value'][0]['title']
+                        statement_time = warnings['statements']['value'][0]['date']
+                        warning_text.append(statement_title)
+                        warning_time.append(statement_time)
+                    except IndexError:
+                        warning_text.append("No statements")
+                        warning_time.append("No statements")
+
+                    finally:
+                        return warning_text, warning_time
+        
             
     async def radar(location,image_format):
 
