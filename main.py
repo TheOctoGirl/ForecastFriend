@@ -34,7 +34,7 @@ async def forecast(interaction: nextcord.Interaction, city: str = SlashOption(de
 async def warnings(interaction: nextcord.Interaction, city: str = SlashOption(description='The city you would like the weather alerts for', required=True)):
     try:
         weather_alert_title, weather_alert_time_issued = await weather_api.get_weather.warnings(city)
-        await interaction.send(f'Warning: {weather_alert_title}\nTime Issued: {weather_alert_time_issued}', ephemeral=True)
+        await interaction.send(f'Warning: {weather_alert_title[0]}\nTime Issued: {weather_alert_time_issued[0]}\n\nWatches: {weather_alert_title[1]}\nTime Issued {weather_alert_time_issued[1]}\n\nAdvisory: {weather_alert_title[2]}\nTime Issued: {weather_alert_time_issued[2]}\n\nStatement: {weather_alert_title[3]}\nTime Issued: {weather_alert_time_issued[3]}', ephemeral=True)
     
     except WarningNotFoundError:
        await interaction.send('There are no weather alerts for the specified city')
